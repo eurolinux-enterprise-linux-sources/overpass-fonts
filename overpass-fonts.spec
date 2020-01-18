@@ -1,33 +1,36 @@
 %global fontname overpass
+%global archivename %{fontname}-fonts-ttf
 %global fontconf 60-%{fontname}.conf
 
 Name:		%{fontname}-fonts
-Version:	1.01
-Release:	5%{?dist}
+Version:	2.1
+Release:	1%{?dist}
 Summary:	Typeface based on the U.S. interstate highway road signage type system
-License:	OFL or ASL 2.0 
-URL:		https://fedorahosted.org/overpass-fonts/
-Source0:	https://fedorahosted.org/releases/o/v/overpass-fonts/Overpass-Fonts-%{version}.tar.gz
+License:	OFL
+URL:		https://github.com/RedHatBrand/overpass/
+#Source0:	https://github.com/RedHatBrand/overpass/releases/download/2.0/overpass-fonts-ttf-2.zip
+Source0:	https://pravins.fedorapeople.org/overpass-fonts/%{archivename}-%{version}.zip
 Source1:	%{name}-fontconfig.conf
-Source2:	http://www.apache.org/licenses/LICENSE-2.0.txt
+Source2:	%{fontname}.metainfo.xml
+
 BuildArch:	noarch
 BuildRequires:	fontpackages-devel
 Requires:	fontpackages-filesystem
 
 %description
-Free & open source typeface based on the U.S. interstate highway road signage 
+Free and open source typeface based on the U.S. interstate highway road signage
 type system; it is sans-serif and suitable for both body and titling text.
 
 %prep
-%setup -q -c
-cp %{SOURCE2} .
+%setup -c -q
 
 %build
 # Nothing to do here.
 
 %install
+mv %{archivename}-%{version}/Overpass\ Specimen\ 8-20-15.pdf %{archivename}-%{version}/Overpass-Specimen-8-20-15.pdf
 install -m 0755 -d %{buildroot}%{_fontdir}
-install -m 0644 -p *.ttf %{buildroot}%{_fontdir}
+install -m 0644 -p %{archivename}-%{version}/*.ttf %{buildroot}%{_fontdir}
 
 install -m 0755 -d %{buildroot}%{_fontconfig_templatedir} \
 		%{buildroot}%{_fontconfig_confdir}
@@ -38,10 +41,22 @@ install -m 0644 -p %{SOURCE1} \
 ln -s %{_fontconfig_templatedir}/%{fontconf} \
 		%{buildroot}%{_fontconfig_confdir}/%{fontconf}
 
+# Add AppStream metadata
+install -Dm 0644 -p %{SOURCE2} \
+	%{buildroot}%{_datadir}/appdata/%{fontname}.metainfo.xml
+
 %_font_pkg -f %{fontconf} *.ttf
-%doc Overpass-OFL.txt LICENSE-2.0.txt
+%doc %{archivename}-%{version}/README.md %{archivename}-%{version}/Overpass-Specimen-8-20-15.pdf
+%license %{archivename}-%{version}/LICENSE.md
+%{_datadir}/appdata/%{fontname}.metainfo.xml
 
 %changelog
+* Thu May 05 2016 Pravin Satute <psatute AT redhat DOT com> - 2.1-1
+- Resolves: rhbz#1284772 - Upstream new release with ttfautohint
+- Changed url to https://github.com/RedHatBrand/overpass/, https://overpassfont.org looks dead.
+- Add Light variant font.
+- Add metainfo file to show this font in gnome-software.
+
 * Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.01-5
 - Mass rebuild 2013-12-27
 
