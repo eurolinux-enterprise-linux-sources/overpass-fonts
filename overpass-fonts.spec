@@ -3,7 +3,7 @@
 
 Name:		%{fontname}-fonts
 Version:	1.01
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	Typeface based on the U.S. interstate highway road signage type system
 License:	OFL or ASL 2.0 
 URL:		https://fedorahosted.org/overpass-fonts/
@@ -42,6 +42,9 @@ ln -s %{_fontconfig_templatedir}/%{fontconf} \
 %doc Overpass-OFL.txt LICENSE-2.0.txt
 
 %changelog
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.01-5
+- Mass rebuild 2013-12-27
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.01-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
